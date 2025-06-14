@@ -12,11 +12,11 @@ class GameManager {
      * 构造函数 - 初始化游戏管理器
      */
     constructor() {
-        /** @type {string} 聊天会话ID */
-        this.chatId = this.generateChatId();
+        /** @type {string} 聊天会话ID - 从localStorage获取或生成新的 */
+        this.chatId = this.getChatId();
         
-        /** @type {number} 当前原谅值 */
-        this.currentForgiveness = 0;
+        /** @type {number} 当前原谅值 - 从localStorage获取或初始化为0 */
+        this.currentForgiveness = this.getCurrentForgiveness();
         
         /** @type {boolean} 游戏是否正在进行 */
         this.gameInProgress = false;
@@ -30,6 +30,52 @@ class GameManager {
         this.initializeElements();
         this.bindEvents();
         this.updateGameStatus('等待开始');
+        
+        // 调试信息
+        console.log('🎮 游戏初始化信息:');
+        console.log('- ChatID:', this.chatId);
+        console.log('- 当前原谅值:', this.currentForgiveness);
+        console.log('- localStorage中的chatId:', localStorage.getItem('game_chatId'));
+        console.log('- localStorage中的原谅值:', localStorage.getItem('game_forgiveness'));
+        
+        // 如果有保存的原谅值，更新UI显示
+        if (this.currentForgiveness > 0) {
+            this.forgiveValue.textContent = `${this.currentForgiveness}/100`;
+            const percentage = (this.currentForgiveness / 100) * 100;
+            this.progressFill.style.width = `${percentage}%`;
+            this.updateMood(0, this.currentForgiveness);
+            console.log('✅ 已恢复保存的原谅值:', this.currentForgiveness);
+        }
+    }
+
+    /**
+     * 获取或生成聊天会话ID
+     * @returns {string} 聊天会话ID
+     */
+    getChatId() {
+        let chatId = localStorage.getItem('game_chatId');
+        if (!chatId) {
+            chatId = this.generateChatId();
+            localStorage.setItem('game_chatId', chatId);
+        }
+        return chatId;
+    }
+
+    /**
+     * 获取当前原谅值
+     * @returns {number} 当前原谅值
+     */
+    getCurrentForgiveness() {
+        const saved = localStorage.getItem('game_forgiveness');
+        return saved ? parseInt(saved) : 0;
+    }
+
+    /**
+     * 保存当前原谅值到localStorage
+     * @param {number} forgiveness 原谅值
+     */
+    saveForgiveness(forgiveness) {
+        localStorage.setItem('game_forgiveness', forgiveness.toString());
     }
 
     /**
@@ -58,6 +104,7 @@ class GameManager {
         
         // 控制按钮
         this.restartButton = document.getElementById('restartButton');
+        this.fullResetButton = document.getElementById('fullResetButton');
         this.helpButton = document.getElementById('helpButton');
         
         // 弹窗元素
@@ -85,6 +132,7 @@ class GameManager {
         
         // 控制按钮事件
         this.restartButton.addEventListener('click', () => this.restartGame());
+        this.fullResetButton.addEventListener('click', () => this.fullResetGame());
         this.helpButton.addEventListener('click', () => this.showHelp());
         
         // 结果弹窗事件
@@ -173,7 +221,13 @@ class GameManager {
      * @param {string} message 用户消息
      */
     async sendToAI(message) {
-        const url = `/ai/game?prompt=${encodeURIComponent(message)}&chatId=${this.chatId}`;
+        // 如果游戏刚开始且有保存的原谅值，在消息中包含这个信息
+        let finalMessage = message;
+        if (!this.gameStarted && this.currentForgiveness > 0) {
+            finalMessage = `${message}\n\n[系统提示：当前对话历史中的原谅值为${this.currentForgiveness}/100，请基于此原谅值继续游戏，不要重置为20]`;
+        }
+        
+        const url = `/ai/game?prompt=${encodeURIComponent(finalMessage)}&chatId=${this.chatId}`;
         
         try {
             const response = await fetch(url);
@@ -275,10 +329,16 @@ class GameManager {
     updateGameState(gameInfo) {
         const { score, forgiveness } = gameInfo;
         
+        console.log('🔄 更新游戏状态:', gameInfo);
+        
         // 更新原谅值
         if (forgiveness !== null) {
+            const oldForgiveness = this.currentForgiveness;
             this.currentForgiveness = forgiveness;
+            this.saveForgiveness(forgiveness); // 保存到localStorage
             this.forgiveValue.textContent = `${forgiveness}/100`;
+            
+            console.log(`💖 原谅值更新: ${oldForgiveness} → ${forgiveness} (得分: ${score})`);
             
             // 更新进度条
             const percentage = (forgiveness / 100) * 100;
@@ -440,23 +500,45 @@ class GameManager {
 
     /**
      * 重新开始游戏
+     * @param {boolean} fullReset 是否完全重置（清除所有历史数据）
      */
-    restartGame() {
+    restartGame(fullReset = false) {
         // 隐藏弹窗
         this.hideResultModal();
         this.hideHelp();
         
-        // 重置游戏状态 - 不重新生成chatId以保持对话历史
-        // this.chatId = this.generateChatId(); // 注释掉此行以保持对话连续性
-        this.currentForgiveness = 0;
+        if (fullReset) {
+            // 完全重置：清除localStorage并生成新的chatId
+            localStorage.removeItem('game_chatId');
+            localStorage.removeItem('game_forgiveness');
+            this.chatId = this.generateChatId();
+            localStorage.setItem('game_chatId', this.chatId);
+            this.currentForgiveness = 0;
+        }
+        
+        // 重置游戏状态
         this.gameInProgress = false;
         this.gameStarted = false;
         
         // 重置UI状态
         this.updateGameStatus('等待开始');
-        this.forgiveValue.textContent = '--/100';
-        this.progressFill.style.width = '0%';
-        this.girlfriendMood.textContent = '😐';
+        if (fullReset) {
+            this.forgiveValue.textContent = '--/100';
+            this.progressFill.style.width = '0%';
+            this.girlfriendMood.textContent = '😐';
+        } else {
+            // 保持当前原谅值显示
+            if (this.currentForgiveness > 0) {
+                this.forgiveValue.textContent = `${this.currentForgiveness}/100`;
+                const percentage = (this.currentForgiveness / 100) * 100;
+                this.progressFill.style.width = `${percentage}%`;
+                this.updateMood(0, this.currentForgiveness);
+            } else {
+                this.forgiveValue.textContent = '--/100';
+                this.progressFill.style.width = '0%';
+                this.girlfriendMood.textContent = '😐';
+            }
+        }
         
         // 清空聊天记录，保留规则说明
         const systemMessage = this.chatMessages.querySelector('.system-message');
@@ -466,6 +548,15 @@ class GameManager {
         }
         
         this.messageInput.focus();
+    }
+
+    /**
+     * 完全重置游戏（清除所有历史数据）
+     */
+    fullResetGame() {
+        if (confirm('确定要完全重置游戏吗？这将清除所有对话历史和进度。')) {
+            this.restartGame(true);
+        }
     }
 
     /**
@@ -549,5 +640,5 @@ function backToHomePage() {
 // 页面加载完成后初始化游戏
 document.addEventListener('DOMContentLoaded', () => {
     window.gameManager = new GameManager();
-    console.log('�� 哄哄模拟器已准备就绪！');
+    console.log(' 哄哄模拟器已准备就绪！');
 }); 

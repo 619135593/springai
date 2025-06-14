@@ -434,6 +434,17 @@ body {
     transform: translateY(-1px);
 }
 
+.reset-button {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+.reset-button:hover {
+    background: #e74c3c;
+    color: white;
+    border-color: #e74c3c;
+}
+
 .home-button {
     background: rgba(255, 107, 157, 0.1);
     border-color: #ff6b9d;
