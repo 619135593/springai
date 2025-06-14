@@ -79,6 +79,23 @@
                         <button class="action-button service">联系客服</button>
                     </div>
                 </div>
+
+                <!-- ChatPDF 智能问答功能 -->
+                <div class="feature-card pdf-feature" onclick="openPdfMode()">
+                    <div class="feature-icon">📄</div>
+                    <div class="feature-content">
+                        <h3>ChatPDF 智能问答</h3>
+                        <p>上传PDF文档，与文档内容进行智能对话问答</p>
+                        <div class="feature-highlights">
+                            <span class="highlight">📚 文档解析</span>
+                            <span class="highlight">🔍 智能检索</span>
+                            <span class="highlight">💬 内容问答</span>
+                        </div>
+                    </div>
+                    <div class="feature-action">
+                        <button class="action-button pdf">开始问答</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -215,6 +232,11 @@
                             <h4>智能客服</h4>
                             <p>专业的技术支持服务</p>
                         </div>
+                        <div class="feature-card pdf" onclick="closeAbout(); openPdfMode()">
+                            <span class="feature-icon">📄</span>
+                            <h4>ChatPDF问答</h4>
+                            <p>智能PDF文档问答</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -258,6 +280,12 @@
         function openServiceMode() {
             currentMode = 'service';
             window.location.href = '/service.html';
+        }
+
+        // 打开PDF问答模式
+        function openPdfMode() {
+            currentMode = 'pdf';
+            window.location.href = '/pdf.html';
         }
 
         // 返回首页

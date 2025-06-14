@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📄 ChatPDF - 智能PDF问答助手</title>
+    <link rel="stylesheet" href="pdf-style.css">
+    <link rel="shortcut icon" href="data:text/plain;," type="image/x-icon">
+</head>
+<body>
+    <div class="pdf-container">
+        <!-- 头部区域 -->
+        <div class="pdf-header">
+            <button class="back-button" onclick="backToHomePage()">
+                ← 返回首页
+            </button>
+            <div class="pdf-title">
+                <h1>📄 ChatPDF</h1>
+                <p class="pdf-subtitle">智能PDF文档问答助手</p>
+            </div>
+            <div class="status-indicator">
+                <div class="status-item">
+                    <span class="status-label">连接:</span>
+                    <span class="status-value" id="chatStatus">未开始</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">文档:</span>
+                    <span class="status-value" id="fileStatus">未上传</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区域 - 合并上传和聊天 -->
+        <div class="main-content">
+            
+            <!-- 文档上传/信息区域 -->
+            <div class="document-section" id="documentSection">
+                
+                <!-- 未上传状态 - 上传区域 -->
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-text">
+                        <h3>拖拽PDF文件到此处或点击选择</h3>
+                        <p>支持PDF格式，文件大小不超过50MB</p>
+                    </div>
+                    <input type="file" id="fileInput" class="file-input" accept=".pdf,application/pdf">
+                    <button class="upload-button" id="uploadButton">
+                        选择PDF文件
+                    </button>
+                </div>
+
+                <!-- 上传进度状态 -->
+                <div class="upload-progress" id="uploadProgress" style="display: none;">
+                    <div class="progress-info">
+                        <div class="progress-icon">⏳</div>
+                        <h4>正在处理您的PDF文档...</h4>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p id="progressText">解析文档内容中...</p>
+                </div>
+
+                <!-- 已上传状态 - 文档信息 -->
+                <div class="document-info" id="documentInfo" style="display: none;">
+                    <div class="doc-icon">📄</div>
+                    <div class="doc-details">
+                        <h4 id="docName">文档名称</h4>
+                        <p id="docSize">文件大小</p>
+                        <span class="doc-status">✅ 已解析完成，可以开始对话</span>
+                    </div>
+                    <button class="change-doc-button" onclick="changeDocument()">更换文档</button>
+                </div>
+
+                <!-- 全局知识库状态 -->
+                <div class="global-knowledge-base" id="globalKnowledgeBase" style="display: none;">
+                    <div class="kb-header">
+                        <div class="kb-icon">🌐</div>
+                        <div class="kb-details">
+                            <h4>全局知识库</h4>
+                            <p id="kbStats">正在加载...</p>
+                        </div>
+                        <button class="refresh-kb-button" onclick="refreshKnowledgeBase()" title="刷新知识库">
+                            🔄
+                        </button>
+                    </div>
+                    
+                    <div class="kb-documents" id="kbDocuments">
+                        <div class="documents-header">
+                            <h5>📚 已上传文档</h5>
+                            <button class="toggle-docs-button" id="toggleDocsButton" onclick="toggleDocumentsList()">
+                                显示列表 ▼
+                            </button>
+                        </div>
+                        <div class="documents-list" id="documentsList" style="display: none;">
+                            <div class="loading-docs">正在加载文档列表...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 聊天区域 -->
+            <div class="chat-section" id="chatSection">
+                
+                <!-- 欢迎消息/聊天消息区域 -->
+                <div class="chat-messages" id="chatMessages">
+                    <div class="welcome-message" id="welcomeMessage">
+                        <div class="welcome-content">
+                            <div class="welcome-icon">🤖</div>
+                            <h3>🎯 欢迎使用ChatPDF全局智能问答</h3>
+                            <div class="feature-list">
+                                <div class="feature-item">
+                                    <span class="feature-icon">📄</span>
+                                    <span>请上传PDF文档，所有文档会自动加入全局知识库</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">🌐</span>
+                                    <span>AI可以基于所有已上传的PDF文档进行智能问答</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">🔍</span>
+                                    <span>支持跨文档检索，找到最相关的信息回答您的问题</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">💡</span>
+                                    <span>支持文档对比、总结、关联分析等高级功能</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 输入区域 -->
+                <div class="input-area" id="inputArea">
+                    <div class="input-container">
+                        <textarea 
+                            id="messageInput" 
+                            placeholder="请先上传PDF文档后再进行提问..." 
+                            maxlength="1000"
+                            rows="1"
+                            disabled></textarea>
+                        <div class="input-actions">
+                            <div class="char-count" id="charCount">0/1000</div>
+                            <button class="clear-button" onclick="clearChat()" title="清空对话" disabled>
+                                🗑️
+                            </button>
+                            <button class="send-button" id="sendButton" onclick="sendMessage()" disabled>
+                                <span class="send-text">发送</span>
+                                <span class="send-icon">📤</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="loading-indicator" id="loadingIndicator" style="display: none;">
+                        <div class="loading-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <span class="loading-text">AI正在思考中...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通知容器 -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <script src="pdf-script.js"></script>
+    <script>
+        /**
+         * 返回首页
+         */
+        function backToHomePage() {
+            if (confirm('确定要返回首页吗？当前对话记录将会保留。')) {
+                window.location.href = '/';
+            }
+        }
+
+        /**
+         * 更换文档
+         */
+        function changeDocument() {
+            if (window.pdfChatManager) {
+                window.pdfChatManager.changeDocument();
+            }
+        }
+
+        /**
+         * 清空对话
+         */
+        function clearChat() {
+            if (window.pdfChatManager) {
+                window.pdfChatManager.clearChat();
+            }
+        }
+
+        /**
+         * 发送消息
+         */
+        function sendMessage() {
+            if (window.pdfChatManager) {
+                window.pdfChatManager.sendMessage();
+            }
+        }
+
+        /**
+         * 填充示例问题
+         * @param {HTMLElement} element 点击的问题标签元素
+         */
+        function fillQuestion(element) {
+            const question = element.textContent;
+            const messageInput = document.getElementById('messageInput');
+            if (messageInput && window.pdfChatManager) {
+                messageInput.value = question;
+                window.pdfChatManager.updateCharCount();
+                messageInput.focus();
+            }
+        }
+    </script>
+</body>
+</html> 

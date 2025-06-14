@@ -178,6 +178,19 @@ body {
     color: #20c997;
 }
 
+/* PDF功能样式 */
+.pdf-feature:hover {
+    border-color: #fd7e14;
+}
+
+.pdf-feature::before {
+    background: linear-gradient(90deg, #fd7e14, #e83e8c);
+}
+
+.pdf-feature .highlight {
+    color: #fd7e14;
+}
+
 .feature-icon {
     font-size: 3rem;
     margin-bottom: 20px;
@@ -257,6 +270,15 @@ body {
 
 .action-button.service:hover {
     box-shadow: 0 6px 20px rgba(32, 201, 151, 0.4);
+}
+
+.action-button.pdf {
+    background: linear-gradient(135deg, #fd7e14 0%, #e83e8c 100%);
+    box-shadow: 0 4px 15px rgba(253, 126, 20, 0.3);
+}
+
+.action-button.pdf:hover {
+    box-shadow: 0 6px 20px rgba(253, 126, 20, 0.4);
 }
 
 /* 聊天界面（嵌入模式） */
@@ -815,7 +837,10 @@ input:checked + .slider:before {
 
 .about-content .feature-card.service:hover {
     border-color: #20c997;
-    box-shadow: 0 4px 15px rgba(32, 201, 151, 0.2);
+}
+
+.about-content .feature-card.pdf:hover {
+    border-color: #fd7e14;
 }
 
 .about-content .feature-icon {

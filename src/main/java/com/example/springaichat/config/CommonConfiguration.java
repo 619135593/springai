@@ -101,28 +101,23 @@ public class CommonConfiguration {
     }
 
     /**
-     *  PDF查询的ChatClient
-     * @param model // 使用的模型
-     * @param chatMemory  // 会话历史记录
-     * @param vectorStore // 向量库
-     * @return
+     * 简化的PDF查询ChatClient（不使用向量数据库）
+     * 专门用于基于简单RAG的PDF文档问答
+     * @param model 使用的聊天模型
+     * @param chatMemory 会话历史记录
+     * @return PDF专用的ChatClient
      */
     @Bean
-    public ChatClient pdfChatClient(OpenAiChatModel model,
-                                    ChatMemory chatMemory,
-                                    VectorStore vectorStore ) {
-        return ChatClient.builder(model) // 创建ChatClient工厂
-                .defaultAdvisors(new SimpleLoggerAdvisor()) // 添加一个日志拦截器
-                .defaultAdvisors(new MessageChatMemoryAdvisor(chatMemory)) // 添加一个会话历史记录的拦截器,用于会话记忆
-                .defaultAdvisors(new QuestionAnswerAdvisor(
-                        vectorStore, // 向量库
-                        SearchRequest.builder() // 向量检索的请求参数
-                                .similarityThreshold(0.6d) // 相似度阈值
-                                .topK(2) // 返回匹配的文档片段数
-                                .build()
-                ))
-                .build(); // 构建ChatClient实例
+    public ChatClient simplePdfChatClient(OpenAiChatModel model, ChatMemory chatMemory) {
+        return ChatClient.builder(model)
+            .defaultSystem("你是一个专业的文档助手，擅长根据提供的文档内容回答用户问题。请始终基于给定的文档内容进行回答，如果文档中没有相关信息，请如实告知。")
+            .defaultAdvisors(
+                new SimpleLoggerAdvisor(), // 日志拦截器
+                new MessageChatMemoryAdvisor(chatMemory) // 会话历史记录拦截器
+            )
+            .build();
     }
+
     /**
      * 创建一个默认的ChatMemory，用于存储对话历史记录
      * @return
