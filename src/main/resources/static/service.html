@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛎️ 智能客服 - SpringAI</title>
+    <link rel="stylesheet" href="service-style.css">
+</head>
+<body>
+    <div class="service-container">
+        <!-- 客服头部 -->
+        <div class="service-header">
+            <button class="back-to-home-button" onclick="backToHomePage()">← 返回首页</button>
+            <div class="header-content">
+                <h1>🛎️ 智能客服助手</h1>
+                <p class="header-subtitle">7×24小时在线，为您提供专业服务</p>
+            </div>
+            <div class="service-status">
+                <span class="status-dot online"></span>
+                <span>客服在线</span>
+            </div>
+        </div>
+
+        <!-- 聊天消息区域 -->
+        <div class="chat-messages" id="chatMessages">
+            <!-- 欢迎消息 -->
+            <div class="message bot-message">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <div class="message-text">
+                        👋 您好！我是兆编码早高薪的课程顾问兆兆，很高兴为您服务！我可以帮您：
+                        • 了解IT职业发展方向
+                        • 选择适合的课程体系
+                        • 安排免费试听课程
+                        期待与您交流，为您的职业发展提供专业建议~
+                    </div>
+                    <div class="message-time">刚刚</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速回复选项 -->
+        <div class="quick-replies" id="quickReplies">
+            <div class="quick-reply-item" onclick="sendQuickReply('我需要技术支持')">🔧 技术支持</div>
+            <div class="quick-reply-item" onclick="sendQuickReply('产品咨询')">🛍️ 产品咨询</div>
+            <div class="quick-reply-item" onclick="sendQuickReply('使用帮助')">❓ 使用帮助</div>
+            <div class="quick-reply-item" onclick="sendQuickReply('联系人工客服')">👨‍💼 人工客服</div>
+        </div>
+
+        <!-- 输入区域 -->
+        <div class="chat-input">
+            <div class="input-container">
+                <textarea 
+                    id="messageInput" 
+                    placeholder="请描述您遇到的问题，我会尽力帮您解决..." 
+                    rows="1"
+                    maxlength="500"
+                ></textarea>
+                <button id="sendButton" class="send-button">
+                    <span>发送</span>
+                    <span class="send-icon">📤</span>
+                </button>
+            </div>
+            <div class="input-footer">
+                <span class="char-count">0/500</span>
+            </div>
+        </div>
+
+        <!-- 加载动画 -->
+        <div class="loading-indicator" id="loadingIndicator">
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <p>客服正在回复中...</p>
+        </div>
+    </div>
+
+    <script src="service-script.js"></script>
+</body>
+</html> 

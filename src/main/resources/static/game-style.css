@@ -1,0 +1,749 @@
+/**
+ * 哄哄模拟器游戏样式
+ * 游戏化UI设计，粉色系恋爱主题
+ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    overflow-x: hidden;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 900px;
+    height: 95vh;
+    min-height: 700px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    box-shadow: 0 25px 50px rgba(255, 154, 158, 0.3);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 2px solid rgba(255, 182, 193, 0.5);
+}
+
+/* 游戏头部 */
+.game-header {
+    background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(196, 69, 105, 0.3);
+    position: relative;
+}
+
+.back-to-home-button {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: #ff6b9d;
+    padding: 10px 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.back-to-home-button:hover {
+    background: white;
+    border-color: white;
+    color: #c44569;
+    transform: translateY(-50%) translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.game-title {
+    flex: 1;
+    text-align: center;
+}
+
+.game-title h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.game-subtitle {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin: 5px 0 0 0;
+    font-weight: 300;
+}
+
+.game-status {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.status-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin-bottom: 3px;
+}
+
+.status-value {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+}
+
+.forgive-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding: 6px 15px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    min-width: 80px;
+}
+
+/* 进度条区域 */
+.progress-container {
+    padding: 15px 30px;
+    background: linear-gradient(90deg, #ffe0e6 0%, #fff0f5 100%);
+    border-bottom: 1px solid rgba(255, 182, 193, 0.3);
+}
+
+.progress-bar {
+    position: relative;
+    height: 12px;
+    background: #ffb3ba;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b9d 0%, #4ecdc4 100%);
+    border-radius: 6px;
+    transition: all 0.5s ease;
+    box-shadow: 0 2px 8px rgba(78, 205, 196, 0.4);
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #c44569;
+    font-weight: 600;
+}
+
+/* 游戏场景区域 */
+.game-scene {
+    padding: 20px;
+    text-align: center;
+    background: linear-gradient(180deg, #fff0f5 0%, #ffe0e6 100%);
+    border-bottom: 1px solid rgba(255, 182, 193, 0.3);
+}
+
+.girlfriend-avatar {
+    position: relative;
+    display: inline-block;
+}
+
+.girlfriend-character {
+    font-size: 4rem;
+    margin: 10px;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 4px 8px rgba(255, 154, 158, 0.3));
+}
+
+.mood-indicator {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 2rem;
+    background: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    border: 3px solid #ff6b9d;
+}
+
+/* 聊天消息区域 */
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    background: linear-gradient(180deg, #ffffff 0%, #fff8fa 100%);
+}
+
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(255, 107, 157, 0.3);
+    border-radius: 4px;
+}
+
+.message {
+    margin-bottom: 20px;
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.system-message .message-content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+}
+
+.system-message h3 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.system-message ul {
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.system-message li {
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+.start-hint {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.user-message {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.user-message .message-content {
+    background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 18px 18px 5px 18px;
+    max-width: 70%;
+    box-shadow: 0 3px 12px rgba(196, 69, 105, 0.3);
+    word-wrap: break-word;
+}
+
+.girlfriend-message {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+}
+
+.girlfriend-message .message-content {
+    background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+    color: #2d3436;
+    padding: 15px 20px;
+    border-radius: 18px 18px 18px 5px;
+    max-width: 75%;
+    box-shadow: 0 3px 12px rgba(250, 177, 160, 0.3);
+    position: relative;
+}
+
+.girlfriend-message .message-content::before {
+    content: '👩‍🦰';
+    position: absolute;
+    left: -35px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+}
+
+.score-display {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    border: 2px solid;
+    font-weight: 600;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.score-positive {
+    border-color: #00b894;
+    color: #00b894;
+    background: rgba(0, 184, 148, 0.1);
+}
+
+.score-negative {
+    border-color: #e17055;
+    color: #e17055;
+    background: rgba(225, 112, 85, 0.1);
+}
+
+.score-neutral {
+    border-color: #74b9ff;
+    color: #74b9ff;
+    background: rgba(116, 185, 255, 0.1);
+}
+
+/* 游戏输入区域 */
+.game-input {
+    background: white;
+    border-top: 2px solid rgba(255, 182, 193, 0.3);
+    padding: 20px;
+}
+
+.input-container {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    margin-bottom: 12px;
+}
+
+#messageInput {
+    flex: 1;
+    border: 2px solid #ffb3ba;
+    border-radius: 15px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    resize: none;
+    max-height: 100px;
+    min-height: 44px;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    background: #fff8fa;
+}
+
+#messageInput:focus {
+    border-color: #ff6b9d;
+    box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.15);
+    background: white;
+}
+
+.send-button {
+    background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    min-width: 90px;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(196, 69, 105, 0.3);
+}
+
+.send-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(196, 69, 105, 0.4);
+}
+
+.send-button:active {
+    transform: translateY(0);
+}
+
+.send-button:disabled {
+    background: #ddd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.input-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.game-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.control-button {
+    background: transparent;
+    border: 2px solid #ff6b9d;
+    color: #ff6b9d;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.control-button:hover {
+    background: #ff6b9d;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.home-button {
+    background: rgba(255, 107, 157, 0.1);
+    border-color: #ff6b9d;
+    color: #ff6b9d;
+    font-weight: 600;
+}
+
+.home-button:hover {
+    background: #ff6b9d;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(255, 107, 157, 0.3);
+}
+
+.char-count {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* 弹窗样式 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease-out;
+    position: relative;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.result-emoji {
+    font-size: 4rem;
+    margin: 15px 0;
+}
+
+.result-message {
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    color: #555;
+}
+
+.result-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.result-button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.result-button.primary {
+    background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+    color: white;
+}
+
+.result-button:not(.primary) {
+    background: #f8f9fa;
+    color: #666;
+    border: 2px solid #ddd;
+}
+
+.result-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.help-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ff6b9d;
+    padding-bottom: 15px;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover {
+    color: #ff6b9d;
+}
+
+.score-guide {
+    margin: 15px 0;
+}
+
+.score-item {
+    padding: 8px 15px;
+    margin: 8px 0;
+    border-radius: 20px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.score-item.angry {
+    background: #ffebee;
+    color: #c62828;
+    border: 2px solid #e57373;
+}
+
+.score-item.mad {
+    background: #fff3e0;
+    color: #e65100;
+    border: 2px solid #ffb74d;
+}
+
+.score-item.normal {
+    background: #f3e5f5;
+    color: #7b1fa2;
+    border: 2px solid #ba68c8;
+}
+
+.score-item.happy {
+    background: #e8f5e8;
+    color: #2e7d32;
+    border: 2px solid #81c784;
+}
+
+.score-item.love {
+    background: #fce4ec;
+    color: #c2185b;
+    border: 2px solid #f06292;
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+}
+
+.tips-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* 加载动画 */
+.loading-indicator {
+    display: none;
+    text-align: center;
+    padding: 20px;
+    color: #ff6b9d;
+}
+
+.loading-indicator.show {
+    display: block;
+}
+
+.loading-indicator p {
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.typing-dots {
+    display: inline-flex;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+.typing-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ff6b9d;
+    animation: typing 1.4s ease-in-out infinite;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+.typing-dots span:nth-child(3) { animation-delay: 0s; }
+
+@keyframes typing {
+    0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .game-container {
+        height: 100vh;
+        border-radius: 0;
+        max-width: 100%;
+    }
+    
+    .game-header {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+        position: relative;
+    }
+    
+    .back-to-home-button {
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        transform: none;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 8px 14px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid rgba(255, 255, 255, 0.7);
+        color: #ff6b9d;
+        z-index: 10;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+    
+    .game-title {
+        margin-top: 25px;
+    }
+    
+    .game-title h1 {
+        font-size: 1.5rem;
+    }
+    
+    .game-status {
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .progress-container {
+        padding: 10px 20px;
+    }
+    
+    .chat-messages {
+        padding: 15px;
+    }
+    
+    .girlfriend-character {
+        font-size: 3rem;
+    }
+    
+    .mood-indicator {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+    
+    .game-input {
+        padding: 15px;
+    }
+    
+    .game-controls {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .control-button {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
+} 

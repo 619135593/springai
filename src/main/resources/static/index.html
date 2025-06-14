@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 SpringAI 智能助手平台</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- 平台头部 -->
+        <div class="platform-header">
+            <div class="header-content">
+                <h1>🤖 SpringAI 智能助手平台</h1>
+                <p class="platform-subtitle">体验AI驱动的智能对话与情感交互</p>
+            </div>
+            <div class="header-status">
+                <span class="status-dot online"></span>
+                <span>服务在线</span>
+            </div>
+        </div>
+
+        <!-- 功能选择区域 -->
+        <div class="features-section">
+            <div class="section-title">
+                <h2>✨ 选择您想要的AI体验</h2>
+                <p>我们提供多种AI交互模式，满足不同场景需求</p>
+            </div>
+
+            <div class="features-grid">
+                <!-- 智能聊天功能 -->
+                <div class="feature-card chat-feature" onclick="openChatMode()">
+                    <div class="feature-icon">💬</div>
+                    <div class="feature-content">
+                        <h3>智能聊天助手</h3>
+                        <p>与AI进行自然对话，获得智能问答和帮助</p>
+                        <div class="feature-highlights">
+                            <span class="highlight">🚀 流式输出</span>
+                            <span class="highlight">🧠 智能回复</span>
+                            <span class="highlight">📱 响应式</span>
+                        </div>
+                    </div>
+                    <div class="feature-action">
+                        <button class="action-button primary">开始聊天</button>
+                    </div>
+                </div>
+
+                <!-- 哄哄模拟器功能 -->
+                <div class="feature-card game-feature" onclick="openGameMode()">
+                    <div class="feature-icon">💖</div>
+                    <div class="feature-content">
+                        <h3>哄哄模拟器</h3>
+                        <p>测试你的情商，在游戏中学习情感沟通技巧</p>
+                        <div class="feature-highlights">
+                            <span class="highlight">🎮 游戏化</span>
+                            <span class="highlight">💯 积分系统</span>
+                            <span class="highlight">🏆 挑战模式</span>
+                        </div>
+
+                    </div>
+                    <div class="feature-action">
+                        <button class="action-button game">开始游戏</button>
+                    </div>
+                </div>
+
+                <!-- 智能客服功能 -->
+                <div class="feature-card service-feature" onclick="openServiceMode()">
+                    <div class="feature-icon">🛎️</div>
+                    <div class="feature-content">
+                        <h3>智能客服助手</h3>
+                        <p>7×24小时在线客服，为您提供专业的课程推荐</p>
+                        <div class="feature-highlights">
+                            <span class="highlight">🌍 24小时</span>
+                            <span class="highlight">⚡ 快速响应</span>
+                            <span class="highlight">🎯 专业服务</span>
+                        </div>
+                    </div>
+                    <div class="feature-action">
+                        <button class="action-button service">联系客服</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 聊天界面（隐藏状态） -->
+        <div id="chatInterface" class="chat-interface hidden">
+            <div class="interface-header">
+                <button class="back-button" onclick="backToHome()">← 返回首页</button>
+                <h3>💬 智能聊天助手</h3>
+                <div class="status">
+                    <span class="status-dot online"></span>
+                    <span id="connectionStatus">在线</span>
+                </div>
+            </div>
+
+            <!-- 聊天消息区域 -->
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div class="message-content">
+                        <div class="message-text">
+                            👋 你好！我是李华，一名霸道女孩，请开始和我对话！
+                        </div>
+                        <div class="message-time">刚刚</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 聊天输入区域 -->
+            <div class="chat-input">
+                <div class="input-container">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="请输入您的消息..." 
+                        rows="1"
+                        maxlength="2000"
+                    ></textarea>
+                    <button id="sendButton" class="send-button">
+                        <span>发送</span>
+                        <span class="send-icon">📤</span>
+                    </button>
+                </div>
+                <div class="input-options">
+                    <div class="input-controls">
+                        <label class="switch">
+                            <input type="checkbox" id="streamMode" checked>
+                            <span class="slider"></span>
+                            <span class="switch-label">流式输出</span>
+                        </label>
+                    </div>
+                    <span class="char-count">0/2000</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 项目信息区域 -->
+        <div class="info-section">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">🔧</div>
+                    <h4>技术栈</h4>
+                    <p>Spring Boot + SpringAI + 阿里云百炼</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">⚡</div>
+                    <h4>特性</h4>
+                    <p>流式输出 + 实时交互 + 响应式设计</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🎯</div>
+                    <h4>体验</h4>
+                    <p>智能对话 + 情感互动 + 游戏化学习</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <div class="platform-footer">
+            <p>🤖 SpringAI 智能助手平台 - 让AI更贴近生活</p>
+            <div class="footer-links">
+                <button onclick="showAbout()" class="footer-link">关于项目</button>
+                <a href="https://github.com/spring-projects/spring-ai" class="footer-link" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loading-indicator" id="loadingIndicator">
+        <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <p>AI正在思考...</p>
+    </div>
+
+    <!-- 关于项目弹窗 -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🤖 关于 SpringAI 项目</h2>
+                <button id="closeAboutButton" class="close-button">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="about-content">
+                    <h3>✨ 项目特色</h3>
+                    <ul>
+                        <li>💬 <strong>智能聊天</strong>：基于阿里云百炼API的智能对话系统</li>
+                        <li>💖 <strong>哄哄模拟器</strong>：有趣的情感交互游戏</li>
+                        <li>🛎️ <strong>智能客服</strong>：7×24小时专业技术支持服务</li>
+                        <li>🚀 <strong>流式输出</strong>：实时显示AI回复内容</li>
+                        <li>📱 <strong>响应式设计</strong>：完美适配各种设备</li>
+                    </ul>
+                    
+                    <h3>🔧 技术栈</h3>
+                    <ul>
+                        <li><strong>后端</strong>：Spring Boot + SpringAI + 阿里云百炼</li>
+                        <li><strong>前端</strong>：原生 HTML5 + CSS3 + ES6 JavaScript</li>
+                        <li><strong>特性</strong>：RESTful API + Server-Sent Events</li>
+                    </ul>
+                    
+                    <h3>🎮 功能体验</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card" onclick="closeAbout(); openChatMode()">
+                            <span class="feature-icon">💬</span>
+                            <h4>智能聊天</h4>
+                            <p>与AI助手进行自然对话</p>
+                        </div>
+                        <div class="feature-card game" onclick="closeAbout(); openGameMode()">
+                            <span class="feature-icon">💖</span>
+                            <h4>哄哄模拟器</h4>
+                            <p>测试情商的恋爱游戏</p>
+                        </div>
+                        <div class="feature-card service" onclick="closeAbout(); openServiceMode()">
+                            <span class="feature-icon">🛎️</span>
+                            <h4>智能客服</h4>
+                            <p>专业的技术支持服务</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // 当前模式状态
+        let currentMode = 'home'; // 'home', 'chat', 'game'
+
+        // 打开聊天模式
+        function openChatMode() {
+            currentMode = 'chat';
+            
+            // 隐藏首页内容
+            document.querySelector('.features-section').style.display = 'none';
+            document.querySelector('.info-section').style.display = 'none';
+            document.querySelector('.platform-footer').style.display = 'none';
+            
+            // 显示聊天界面
+            document.getElementById('chatInterface').classList.remove('hidden');
+            
+            // 更新头部
+            document.querySelector('.platform-header h1').textContent = '💬 智能聊天助手';
+            document.querySelector('.platform-subtitle').textContent = '与AI进行自然对话，获得智能问答和帮助';
+            
+            // 聚焦输入框
+            setTimeout(() => {
+                document.getElementById('messageInput').focus();
+            }, 300);
+        }
+
+        // 打开游戏模式
+        function openGameMode() {
+            currentMode = 'game';
+            window.location.href = '/game.html';
+        }
+
+        // 打开客服模式
+        function openServiceMode() {
+            currentMode = 'service';
+            window.location.href = '/service.html';
+        }
+
+        // 返回首页
+        function backToHome() {
+            currentMode = 'home';
+            
+            // 显示首页内容
+            document.querySelector('.features-section').style.display = 'block';
+            document.querySelector('.info-section').style.display = 'block';
+            document.querySelector('.platform-footer').style.display = 'block';
+            
+            // 隐藏聊天界面
+            document.getElementById('chatInterface').classList.add('hidden');
+            
+            // 恢复头部
+            document.querySelector('.platform-header h1').textContent = '🤖 SpringAI 智能助手平台';
+            document.querySelector('.platform-subtitle').textContent = '体验AI驱动的智能对话与情感交互';
+            
+            // 清空聊天记录
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class="message ai-message">
+                    <div class="message-content">
+                        <div class="message-text">
+                            👋 您好！我是兆编码早高薪的课程顾问兆兆，很高兴为您服务！我可以帮您：
+                            • 了解IT职业发展方向
+                            • 选择适合的课程体系
+                            • 安排免费试听课程
+                            期待与您交流，为您的职业发展提供专业建议~
+                        </div>
+                        <div class="message-time">刚刚</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 显示关于弹窗
+        function showAbout() {
+            document.getElementById('aboutModal').classList.add('show');
+        }
+
+        // 关闭关于弹窗
+        function closeAbout() {
+            document.getElementById('aboutModal').classList.remove('show');
+        }
+
+        // 关闭关于弹窗
+        document.getElementById('closeAboutButton').addEventListener('click', closeAbout);
+
+        // 点击外部关闭关于弹窗
+        document.getElementById('aboutModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAbout();
+            }
+        });
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 SpringAI智能助手平台已加载完成！');
+        });
+    </script>
+</body>
+</html>
