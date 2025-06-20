@@ -142,7 +142,8 @@ public class PdfController {
      * @return 流式响应
      */
     @GetMapping(value = "/chat", produces = MediaType.TEXT_HTML_VALUE + ";charset=UTF-8")
-    public Flux<String> chat(@RequestParam String prompt, @RequestParam String chatId) {
+    public Flux<String> chat(@RequestParam String prompt, 
+                             @RequestParam(value = "chatId", defaultValue = "default_pdf_chat") String chatId) {
         log.info("开始基于全局知识库的对话，chatId: {}, 用户问题: {}", chatId, prompt);
         
         try {

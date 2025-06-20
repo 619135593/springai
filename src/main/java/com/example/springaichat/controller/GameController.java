@@ -3,6 +3,7 @@ package com.example.springaichat.controller;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
@@ -16,7 +17,8 @@ public class GameController {
     private ChatClient gameChatClient;
 
     @RequestMapping(value = "/game", produces = "text/html;charset=utf-8")
-    public Flux<String> chat(String prompt, String chatId){
+    public Flux<String> chat(@RequestParam String prompt, 
+                             @RequestParam(value = "chatId", defaultValue = "default_game_chat") String chatId){
         return gameChatClient
                 .prompt()
                 .user(prompt)// 传入user提示词

@@ -35,7 +35,8 @@ public class ChatController {
                 .content(); //返回响应内容
     }
     @RequestMapping(value = "/chat/stream",produces = "text/html;charset=utf-8")
-    public Flux<String> chatStream(@RequestParam() String prompt , String chatId) {
+    public Flux<String> chat(@RequestParam String prompt, 
+                             @RequestParam(value = "chatId", defaultValue = "default_chat_chat") String chatId){
         chatHistoryRepository.save("chat",chatId);
         return chatClient
                 .prompt()

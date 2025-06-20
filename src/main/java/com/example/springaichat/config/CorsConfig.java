@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * 全局跨域配置
  *
- * @author <a href="https://github.com/">程序员周子尧</a>
+ * @author <a href="https://github.com/">程序员</a>
  * 
  */
 @Configuration

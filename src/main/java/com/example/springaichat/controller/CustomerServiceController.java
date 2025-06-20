@@ -4,6 +4,7 @@ import com.example.springaichat.repository.ChatHistoryRepository;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
@@ -18,7 +19,8 @@ public class CustomerServiceController {
     private ChatHistoryRepository chatHistoryRepository;
 
     @RequestMapping(value = "/service", produces = "text/html;charset=utf-8")
-    public Flux<String> service(String prompt, String chatId){
+    public Flux<String> chat(@RequestParam String prompt, 
+                             @RequestParam(value = "chatId", defaultValue = "default_service_chat") String chatId){
         chatHistoryRepository.save("service",chatId);
         return serviceChatClient
                 .prompt()
